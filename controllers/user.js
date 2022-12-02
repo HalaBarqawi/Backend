@@ -1,7 +1,7 @@
 const jwt = require('jsonwebtoken');
 const User = require('../models/user');
 const Worker = require('../models/worker')
-const Task= require('../models/task')
+
 
 const sharp = require('sharp');
 const cloudinary = require('../helper/imageUpload');
@@ -136,14 +136,15 @@ exports.addWorker = async(req,res)=>{
     await worker.save();
     res.json({ success: true, worker });
 }
+exports.findWorker=async(req, res)=>{
+  const workername=await Worker.findOne({workerName:req.params['workerName']});
+  res.send(workername._id);
+   }
+exports.displayWorker=async(req,res)=>{
+  const workerNames=await Worker.find().select('workerName');
+  if(!workerNames){
+    res.status(404).json({success:false ,message:"NO DATA"})
+  }
+  res.send(workerNames)
+}   
 
-exports.addTask=async(req,res)=>{
-  const{workersName, fieldName, deadline,jobType, duration ,note} = req.body;
-  
-  
-  const task = await Task({workersName, fieldName, deadline,jobType, duration ,note});
-  await task.save();
- //const token =jwt.sign({userId:user._id},'MY_SECRET_KEY');
-  res.json({ success: true, task });
- 
-};

@@ -7,7 +7,8 @@ const {
   uploadProfile,
   signOut,
   addWorker,
-  addTask
+  findWorker,
+  displayWorker
 } = require('../controllers/user');
 const { isAuth } = require('../middlewares/auth');
 const {
@@ -39,6 +40,6 @@ router.post(
   uploadProfile
 );
 router.post('/add-worker',addWorker);
-router.post('/add-Task',addTask)
-
+router.get('/worker-id/:workerName',findWorker )
+router.get('/display-worker',displayWorker)
 module.exports = router;
